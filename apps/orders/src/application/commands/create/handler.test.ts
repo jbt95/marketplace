@@ -4,6 +4,8 @@ import { InMemoryRepository } from '@/infrastructure/persistence/in-memory-repos
 import { ZodError } from 'zod';
 import { Order } from '@/domain/order';
 import { OrderAlreadyExistsError } from './order-already-exists.error';
+import { OrderCreated } from '@/domain/events/order-created';
+import { InMemoryEventEmitter } from '@/infrastructure/events/in-memory-event-emitter';
 
 describe('When creating a new order', () => {
 	const inMemoryRepository = new InMemoryRepository();
@@ -14,9 +16,12 @@ describe('When creating a new order', () => {
 	const customer_id = '123';
 	const seller_id = '123';
 	const commandHandler = new CreateOrderCommandHandler(inMemoryRepository);
+	const inMemoryEventEmitter = new InMemoryEventEmitter();
 
 	beforeEach(() => {
 		inMemoryRepository.orders = [];
+		inMemoryEventEmitter.events = [];
+		Order.eventEmitter = inMemoryEventEmitter;
 	});
 
 	it('should create a new order', async () => {
@@ -37,6 +42,25 @@ describe('When creating a new order', () => {
 		expect(order?.seller_id).toBe('123');
 	});
 
+	it('should emit an event', async () => {
+		await commandHandler.execute({
+			id,
+			price,
+			quantity,
+			product_id,
+			customer_id,
+			seller_id
+		});
+		expect(inMemoryEventEmitter.events.at(0)).toBeInstanceOf(OrderCreated);
+		const event = inMemoryEventEmitter.events.at(0) as OrderCreated;
+		expect(event.order.id).toBe(id);
+		expect(event.order.price).toBe(price);
+		expect(event.order.quantity).toBe(quantity);
+		expect(event.order.product_id).toBe(product_id);
+		expect(event.order.customer_id).toBe(customer_id);
+		expect(event.order.seller_id).toBe(seller_id);
+	});
+
 	describe('when there is a validation error', () => {
 		it('should throw an error', async () => {
 			await expect(
@@ -53,8 +77,11 @@ describe('When creating a new order', () => {
 	});
 
 	describe('when the order already exists', () => {
-		const order = new Order(id, price, quantity, product_id, customer_id, seller_id);
-		beforeEach(() => inMemoryRepository.create(order));
+		beforeEach(async () => {
+			await inMemoryRepository.create(
+				new Order(id, price, quantity, product_id, customer_id, seller_id)
+			);
+		});
 		it('should throw an error', async () => {
 			await expect(
 				commandHandler.execute({

@@ -2,8 +2,10 @@ import { Order } from '@/domain/order';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ListOrdersQueryHandler } from './handler';
 import { InMemoryRepository } from '@/infrastructure/persistence/in-memory-repository';
+import { InMemoryEventEmitter } from '@/infrastructure/events/in-memory-event-emitter';
 
 describe('When listing orders', () => {
+	Order.eventEmitter = new InMemoryEventEmitter();
 	const inMemoryRepository = new InMemoryRepository();
 	const id = 'id';
 	const product_id = 'productId';

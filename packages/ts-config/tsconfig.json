@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "ES2020",
-		"module": "ES2022",
+		"module": "ESNext",
 		"lib": ["es2020"],
 		"declaration": true,
 		"strict": true,
@@ -10,6 +10,7 @@
 		"noImplicitThis": true,
 		"alwaysStrict": true,
 		"noUnusedLocals": true,
+		"skipLibCheck": true,
 		"noUnusedParameters": false,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": false,
@@ -21,5 +22,5 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true
 	},
-	"exclude": ["node_modules", "cdk.out"]
+	"exclude": ["node_modules"]
 }

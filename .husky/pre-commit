@@ -1,0 +1,2 @@
+pnpm run type:check:all
+pnpm run test:unit:all

@@ -2,8 +2,10 @@ import { Order } from '@/domain/order';
 import { InMemoryRepository } from '@/infrastructure/persistence/in-memory-repository';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { GetOrderByIdQueryHandler } from './handler';
+import { InMemoryEventEmitter } from '@/infrastructure/events/in-memory-event-emitter';
 
 describe('When getting an order by id', () => {
+	Order.eventEmitter = new InMemoryEventEmitter();
 	const inMemoryRepository = new InMemoryRepository();
 	const id = 'id';
 	const product_id = 'productId';

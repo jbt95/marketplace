@@ -1,15 +1,12 @@
-import { Order } from '@/domain/order';
 import { OrderRepository } from '@/domain/repository';
 import { z } from 'zod';
 import { OrderNotFoundError } from './order-not-found.error';
 
 const schema = z.object({
 	id: z.string(),
-	price: z.number(),
-	quantity: z.number(),
-	product_id: z.string(),
-	customer_id: z.string(),
-	seller_id: z.string()
+	price: z.number().min(1).optional(),
+	quantity: z.number().min(1).optional(),
+	status: z.union([z.literal('created'), z.literal('accepted'), z.literal('rejected')]).optional()
 });
 
 type UpdateOrderCommandSchema = z.infer<typeof schema>;
@@ -23,15 +20,9 @@ export class UpdateOrderCommandHandler {
 		if (!order) {
 			throw new OrderNotFoundError();
 		}
-		await this.orderRepository.update(
-			new Order(
-				parsed.id,
-				parsed.price,
-				parsed.quantity,
-				parsed.product_id,
-				parsed.customer_id,
-				parsed.seller_id
-			)
-		);
+		order.price = parsed.price ?? order.price;
+		order.quantity = parsed.quantity ?? order.quantity;
+		order.status = parsed.status ?? order.status;
+		await this.orderRepository.update(order);
 	}
 }

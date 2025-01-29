@@ -5,8 +5,8 @@ import { OrderAlreadyExistsError } from './order-already-exists.error';
 
 const schema = z.object({
 	id: z.string(),
-	price: z.number(),
-	quantity: z.number(),
+	price: z.number().min(1),
+	quantity: z.number().min(1),
 	product_id: z.string(),
 	customer_id: z.string(),
 	seller_id: z.string()
