@@ -76,6 +76,36 @@ describe('When creating a new order', () => {
 		});
 	});
 
+	describe('when the price is less than 1', () => {
+		it('should throw an error', async () => {
+			await expect(
+				commandHandler.execute({
+					id,
+					price: -1,
+					quantity: 1,
+					product_id: 'productId',
+					customer_id: '123',
+					seller_id: '123'
+				})
+			).rejects.toThrow(ZodError);
+		});
+	});
+
+	describe('when the quantity is less than 1', () => {
+		it('should throw an error', async () => {
+			await expect(
+				commandHandler.execute({
+					id,
+					price: 1,
+					quantity: -1,
+					product_id: 'productId',
+					customer_id: '123',
+					seller_id: '123'
+				})
+			).rejects.toThrow(ZodError);
+		});
+	});
+
 	describe('when the order already exists', () => {
 		beforeEach(async () => {
 			await inMemoryRepository.create(
