@@ -1,0 +1,21 @@
+{
+	"name": "marketplace",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"postinstall": "husky install",
+		"type:check:all": "turbo run type:check --output-logs=new-only" ,
+		"test:unit:all": "turbo run test:unit --output-logs=new-only" ,
+		"format:all": "turbo run format --output-logs=new-only --force"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "UNLICENSED",
+	"devDependencies": {
+		"esbuild": "^0.18.11",
+		"husky": "^8.0.3",
+		"turbo": "^1.10.7"
+	}
+
+}

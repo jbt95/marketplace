@@ -1,0 +1,33 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "type:check": {},
+		"format": {},
+		"build": {},
+		"deploy:prod": {
+			"dependsOn": [
+				"test:unit",
+				"^deploy:prod"
+			]
+		},
+		"deploy:test": {
+			"dependsOn": [
+				"test:unit",
+				"^deploy:test"
+			]
+		},
+		"lint": {
+			"dependsOn": [
+				"type:check",
+				"^lint"
+			]
+		},
+		"test:unit": {},
+		"test:integration": {
+			"dependsOn": [
+				"deploy:test",
+				"^test:integration"
+			]
+		}
+  }
+}
