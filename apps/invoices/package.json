@@ -1,5 +1,5 @@
 {
-	"name": "@marketplace/orders",
+	"name": "@marketplace/invoices",
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
