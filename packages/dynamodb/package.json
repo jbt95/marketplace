@@ -1,0 +1,11 @@
+{
+	"name": "@marketplace/dynamodb",
+	"version": "0.0.0",
+	"private": true,
+	"devDependencies": {
+		"@marketplace/ts-config": "workspace:^0.0.0"
+	},
+	"dependencies": {
+		"aws-sdk": "^2.1692.0"
+	}
+}

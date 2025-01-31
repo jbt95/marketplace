@@ -65,10 +65,22 @@ export class Order {
 				Order.eventEmitter.emit(new OrderRejected(this));
 				break;
 			case 'shipping_in_progress':
-				Order.eventEmitter.emit(new OrderShippingInProgress(this.id));
+				Order.eventEmitter.emit(new OrderShippingInProgress(this));
 				break;
 			case 'shipped':
 				Order.eventEmitter.emit(new OrderShipped(this));
 		}
+	}
+
+	public toJSON() {
+		return {
+			id: this.id,
+			price: this.price,
+			quantity: this.quantity,
+			status: this.status,
+			product_id: this.product_id,
+			customer_id: this.customer_id,
+			seller_id: this.seller_id
+		};
 	}
 }

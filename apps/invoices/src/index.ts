@@ -6,9 +6,17 @@ import { timing } from 'hono/timing';
 import { serve } from '@hono/node-server';
 import { swaggerUI } from '@hono/swagger-ui';
 import { invoiceApp } from './infrastructure/http/rest/handler';
+import { cors } from 'hono/cors';
+import { kafkaClient } from '@marketplace/kafka';
 
 const app = new OpenAPIHono().basePath('/api/v1');
 
+app.use(
+	'*',
+	cors({
+		origin: ['http://localhost:4200']
+	})
+);
 app.use(secureHeaders());
 app.use(prettyJSON());
 app.use(timing());
@@ -23,4 +31,16 @@ app.doc('/docs/openapi', {
 	info: { version: '1.0.0', title: 'Orders API' }
 });
 
-serve(app, (v) => console.log(`[INFO] Listening on port ${v.port}`));
+const consumer = kafkaClient.consumer({ groupId: 'invoices' });
+await consumer.subscribe({ topic: 'invoices', fromBeginning: true });
+await consumer.run({
+	eachMessage: async ({ topic, partition, message }) => {
+		console.log({
+			topic,
+			partition,
+			message: message.value?.toString()
+		});
+	}
+});
+
+serve({ fetch: app.fetch, port: 4200 }, (v) => console.log(`[INFO] Listening on port ${v.port}`));

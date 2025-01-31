@@ -11,8 +11,12 @@ import {
 	UpdateOrderRouteSchema
 } from './route-schema';
 import { errorHandler } from './error-handler';
+import { Order } from '@/domain/order';
+import { KafkaEventEmitter } from '@/infrastructure/events/kafka-event-emitter';
 
 export const ordersApp = new OpenAPIHono();
+
+Order.eventEmitter = new KafkaEventEmitter();
 
 const repository = new InMemoryRepository();
 const createOrderCommandHandler = new CreateOrderCommandHandler(repository);
