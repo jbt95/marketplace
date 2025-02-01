@@ -1,26 +1,22 @@
 {
 	"compilerOptions": {
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"module": "commonjs",
 		"target": "ES2020",
-		"module": "ESNext",
-		"lib": ["es2020"],
-		"declaration": true,
+		"removeComments": true,
+		"sourceMap": true,
+		"incremental": true,
 		"strict": true,
 		"noImplicitAny": true,
-		"strictNullChecks": true,
 		"noImplicitThis": true,
-		"alwaysStrict": true,
-		"noUnusedLocals": true,
-		"skipLibCheck": true,
-		"noUnusedParameters": false,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": false,
-		"inlineSourceMap": true,
-		"inlineSources": true,
 		"strictPropertyInitialization": false,
-		"incremental": true,
-		"moduleResolution": "node",
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"pretty": true,
+		"useUnknownInCatchVariables": true,
+		"outDir": "dist",
+		"declaration": true
 	},
 	"exclude": ["node_modules"]
 }

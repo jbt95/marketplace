@@ -14,3 +14,6 @@ tsconfig.tsbuildinfo
 cdk.out
 .turbo
 .env.local
+/dist
+/packages/**/dist
+/docker

@@ -1,8 +1,13 @@
 import { DomainEvents, EventEmitter } from '@/domain/event-emitter';
-import { kafkaClient } from '@marketplace/kafka';
+import { Kafka } from 'kafkajs';
 
 export class KafkaEventEmitter implements EventEmitter {
-	private producer = kafkaClient.producer();
+	private client = new Kafka({
+		clientId: 'marketplace',
+		brokers: ['localhost:9092']
+	});
+
+	private producer = this.client.producer();
 
 	constructor() {
 		this.producer.connect();
