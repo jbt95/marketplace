@@ -16,6 +16,7 @@ export class Invoice {
 		public url: string
 	) {}
 
+	/* v8 ignore start */
 	public toJSON(): MarshalledInvoice {
 		return {
 			id: this.id,
@@ -25,4 +26,5 @@ export class Invoice {
 			sent_at: this.sentAt?.toISOString()
 		};
 	}
+	/* v8 ignore end */
 }

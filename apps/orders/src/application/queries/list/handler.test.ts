@@ -15,6 +15,7 @@ describe('When listing orders', () => {
 	const seller_id = '123';
 	const commandHandler = new ListOrdersQueryHandler(inMemoryRepository);
 	const order = new Order(id, price, quantity, product_id, customer_id, seller_id);
+	order.updated_at = new Date();
 
 	beforeEach(async () => {
 		inMemoryRepository.orders = [];

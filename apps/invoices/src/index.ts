@@ -7,15 +7,12 @@ import { serve } from '@hono/node-server';
 import { swaggerUI } from '@hono/swagger-ui';
 import { invoiceApp } from './infrastructure/http/rest/handler';
 import { cors } from 'hono/cors';
-import { Kafka } from 'kafkajs';
+import * as amqp from 'amqplib';
+import { RabbitMqEventConsumer } from './infrastructure/events/rabbitmq-event-consumer';
 
 const main = async () => {
+	const consumer = new RabbitMqEventConsumer();
 	const app = new OpenAPIHono().basePath('/api/v1');
-
-	// const kafkaClient = new Kafka({
-	// 	clientId: 'marketplace',
-	// 	brokers: ['localhost:9092']
-	// });
 
 	app.use(
 		'*',
@@ -37,18 +34,7 @@ const main = async () => {
 		info: { version: '1.0.0', title: 'Invoices API' }
 	});
 
-	// const consumer = kafkaClient.consumer({ groupId: 'invoices' });
-
-	// await consumer.subscribe({ topic: 'invoices', fromBeginning: true });
-	// await consumer.run({
-	// 	eachMessage: async ({ topic, partition, message }) => {
-	// 		console.log({
-	// 			topic,
-	// 			partition,
-	// 			message: message.value?.toString()
-	// 		});
-	// 	}
-	// });
+	await consumer.consume();
 
 	serve({ fetch: app.fetch, port: 4200 }, (v) => console.log(`[INFO] Listening on port ${v.port}`));
 };

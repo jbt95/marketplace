@@ -12,11 +12,11 @@ import {
 import { errorHandler } from './error-handler';
 import { Order } from '@/domain/order';
 import { DynamoDBRepository } from '@/infrastructure/persistence/dynamodb-repository';
-import { InMemoryEventEmitter } from '@/infrastructure/events/in-memory-event-emitter';
+import { RabbitMqEventEmitter } from '@/infrastructure/events/rabbitmq-event-emitter';
 
 export const ordersApp = new OpenAPIHono();
 
-Order.eventEmitter = new InMemoryEventEmitter();
+Order.eventEmitter = new RabbitMqEventEmitter();
 
 const repository = new DynamoDBRepository();
 const createOrderCommandHandler = new CreateOrderCommandHandler(repository);

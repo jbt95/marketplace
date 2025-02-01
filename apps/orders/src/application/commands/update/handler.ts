@@ -6,7 +6,15 @@ const schema = z.object({
 	id: z.string(),
 	price: z.number().min(1).optional(),
 	quantity: z.number().min(1).optional(),
-	status: z.union([z.literal('created'), z.literal('accepted'), z.literal('rejected')]).optional()
+	status: z
+		.union([
+			z.literal('created'),
+			z.literal('accepted'),
+			z.literal('rejected'),
+			z.literal('shipped'),
+			z.literal('shipping_in_progress')
+		])
+		.optional()
 });
 
 type UpdateOrderCommandSchema = z.infer<typeof schema>;

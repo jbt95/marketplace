@@ -6,6 +6,9 @@ import { OrderNotFoundError } from './order-not-found.error';
 import { InMemoryEventEmitter } from '@/infrastructure/events/in-memory-event-emitter';
 import { OrderUpdated } from '@/domain/events/order-updated';
 import { OrderAccepted } from '@/domain/events/order-accepted';
+import { OrderRejected } from '@/domain/events/order-rejected';
+import { OrderShipped } from '@/domain/events/order-shipped';
+import { OrderShippingInProgress } from '@/domain/events/order-shipping-in-progress';
 
 describe('When updating an order', () => {
 	const inMemoryRepository = new InMemoryRepository();
@@ -59,7 +62,7 @@ describe('When updating an order', () => {
 		});
 	});
 
-	describe('Whent the status is updated', () => {
+	describe('Whent the status is accepted', () => {
 		it('should update the order', async () => {
 			await commandHandler.execute({ id, status: 'accepted' });
 			const updatedOrder = await inMemoryRepository.findById(id);
@@ -72,6 +75,56 @@ describe('When updating an order', () => {
 			const event = inMemoryEventEmitter.events.find((event) => event instanceof OrderAccepted);
 			expect(event).toBeInstanceOf(OrderAccepted);
 			expect(event!.order.status).toBe('accepted');
+		});
+	});
+
+	describe('Whent the status is rejected', () => {
+		it('should update the order', async () => {
+			await commandHandler.execute({ id, status: 'rejected' });
+			const updatedOrder = await inMemoryRepository.findById(id);
+			expect(updatedOrder).toBeInstanceOf(Order);
+			expect(updatedOrder?.status).toBe('rejected');
+		});
+
+		it('should emit an event', async () => {
+			await commandHandler.execute({ id, status: 'rejected' });
+			const event = inMemoryEventEmitter.events.find((event) => event instanceof OrderRejected);
+			expect(event).toBeInstanceOf(OrderRejected);
+			expect(event!.order.status).toBe('rejected');
+		});
+	});
+
+	describe('Whent the status is shipped', () => {
+		it('should update the order', async () => {
+			await commandHandler.execute({ id, status: 'shipped' });
+			const updatedOrder = await inMemoryRepository.findById(id);
+			expect(updatedOrder).toBeInstanceOf(Order);
+			expect(updatedOrder?.status).toBe('shipped');
+		});
+
+		it('should emit an event', async () => {
+			await commandHandler.execute({ id, status: 'shipped' });
+			const event = inMemoryEventEmitter.events.find((event) => event instanceof OrderShipped);
+			expect(event).toBeInstanceOf(OrderShipped);
+			expect(event!.order.status).toBe('shipped');
+		});
+	});
+
+	describe('Whent the status is shipping_in_progress', () => {
+		it('should update the order', async () => {
+			await commandHandler.execute({ id, status: 'shipping_in_progress' });
+			const updatedOrder = await inMemoryRepository.findById(id);
+			expect(updatedOrder).toBeInstanceOf(Order);
+			expect(updatedOrder?.status).toBe('shipping_in_progress');
+		});
+
+		it('should emit an event', async () => {
+			await commandHandler.execute({ id, status: 'shipping_in_progress' });
+			const event = inMemoryEventEmitter.events.find(
+				(event) => event instanceof OrderShippingInProgress
+			);
+			expect(event).toBeInstanceOf(OrderShippingInProgress);
+			expect(event!.order.status).toBe('shipping_in_progress');
 		});
 	});
 

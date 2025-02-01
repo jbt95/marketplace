@@ -15,6 +15,7 @@ describe('When getting an order by id', () => {
 	const seller_id = '123';
 	const commandHandler = new GetOrderByIdQueryHandler(inMemoryRepository);
 	const order = new Order(id, price, quantity, product_id, customer_id, seller_id);
+	order.updated_at = new Date();
 
 	beforeEach(async () => {
 		inMemoryRepository.orders = [];

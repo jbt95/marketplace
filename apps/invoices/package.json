@@ -7,18 +7,21 @@
 		"type:check": "tsc --noEmit",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"test:unit": "vitest run",
+		"test:coverage": "vitest run --coverage",
 		"dev": "tsx watch ./src/index.ts",
 		"create:table": "tsx ./scripts/create-table.ts",
 		"delete:table": "tsx ./scripts/delete-table.ts"
 	},
 	"devDependencies": {
 		"@types/node": "^22.12.0",
+		"@types/amqplib": "^0.10.6",
 		"prettier": "^3.4.2",
 		"source-map-support": "^0.5.21",
 		"ts-node": "^10.9.1",
 		"tsx": "^4.19.2",
 		"typescript": "^5.7.3",
-		"vitest": "^1.6.0"
+		"vitest": "^1.6.0",
+		"@vitest/coverage-v8": "^1.6.0"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.13.7",
@@ -29,6 +32,6 @@
 		"@aws-sdk/util-dynamodb": "^3.738.0",
 		"hono": "^4.6.12",
 		"zod": "^3.24.1",
-		"kafkajs": "^2.2.4"
+		"amqplib": "^0.10.5"
 	}
 }

@@ -10,6 +10,7 @@ node_modules
 # Generated code
 /apps/**/build
 /apps/**/dist
+/apps/**/coverage
 tsconfig.tsbuildinfo
 cdk.out
 .turbo

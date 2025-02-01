@@ -86,6 +86,7 @@ export class Order {
 		Order.eventEmitter.emit(new OrderUpdated(this));
 	}
 
+	/* v8 ignore start */
 	public toJSON(): MarshalledOrder {
 		return {
 			id: this.id,
@@ -99,4 +100,5 @@ export class Order {
 			updated_at: this.updated_at?.toISOString()
 		};
 	}
+	/* v8 ignore end */
 }

@@ -5,10 +5,15 @@ export default defineConfig({
 	test: {
 		environment: 'node',
 		include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
-		exclude: ['src/**/infrastructure'],
 		globals: true,
 		coverage: {
-			reporter: ['lcov', 'text']
+			reporter: ['lcov', 'text'],
+			exclude: [
+				'src/**/infrastructure',
+				'src/index.ts',
+				'src/application/**/*.schema.ts',
+				'scripts/**/*.ts'
+			]
 		},
 		outputFile: 'coverage/report.xml'
 	},
