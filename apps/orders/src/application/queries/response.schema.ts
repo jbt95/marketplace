@@ -7,7 +7,9 @@ export const orderResponseSchema = z
 		quantity: z.number(),
 		product_id: z.string(),
 		customer_id: z.string(),
-		seller_id: z.string()
+		seller_id: z.string(),
+		created_at: z.string(),
+		updated_at: z.string().optional()
 	})
 	.optional();
 

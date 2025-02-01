@@ -8,7 +8,8 @@
 		"format": "prettier --write \"src/**/*.ts\"",
 		"test:unit": "vitest run",
 		"dev": "tsx watch ./src/index.ts",
-		"create:table": "tsx ./scripts/create-table.ts"
+		"create:table": "tsx ./scripts/create-table.ts",
+		"delete:table": "tsx ./scripts/delete-table.ts"
 	},
 	"devDependencies": {
 		"@marketplace/ts-config": "workspace:^0.0.0",
@@ -26,6 +27,7 @@
 		"@hono/zod-openapi": "^0.18.3",
 		"@hono/zod-validator": "^0.4.1",
 		"@aws-sdk/client-dynamodb": "^3.738.0",
+		"@aws-sdk/util-dynamodb": "^3.738.0",
 		"hono": "^4.6.12",
 		"zod": "^3.24.1",
 		"kafkajs": "^2.2.4"

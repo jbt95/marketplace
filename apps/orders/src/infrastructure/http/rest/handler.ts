@@ -2,7 +2,6 @@ import { CreateOrderCommandHandler } from '@/application/commands/create/handler
 import { UpdateOrderCommandHandler } from '@/application/commands/update/handler';
 import { GetOrderByIdQueryHandler } from '@/application/queries/get-by-id/handler';
 import { ListOrdersQueryHandler } from '@/application/queries/list/handler';
-import { InMemoryRepository } from '@/infrastructure/persistence/in-memory-repository';
 import { OpenAPIHono } from '@hono/zod-openapi';
 import {
 	CreateOrderRouteSchema,
@@ -12,13 +11,14 @@ import {
 } from './route-schema';
 import { errorHandler } from './error-handler';
 import { Order } from '@/domain/order';
-import { KafkaEventEmitter } from '@/infrastructure/events/kafka-event-emitter';
+import { DynamoDBRepository } from '@/infrastructure/persistence/dynamodb-repository';
+import { InMemoryEventEmitter } from '@/infrastructure/events/in-memory-event-emitter';
 
 export const ordersApp = new OpenAPIHono();
 
-Order.eventEmitter = new KafkaEventEmitter();
+Order.eventEmitter = new InMemoryEventEmitter();
 
-const repository = new InMemoryRepository();
+const repository = new DynamoDBRepository();
 const createOrderCommandHandler = new CreateOrderCommandHandler(repository);
 const updateOrderCommandHandler = new UpdateOrderCommandHandler(repository);
 const getOrderByIdQueryHandler = new GetOrderByIdQueryHandler(repository);
@@ -36,14 +36,19 @@ ordersApp.openapi(CreateOrderRouteSchema, (c) =>
 );
 
 ordersApp.openapi(UpdateOrderRouteSchema, (c) =>
-	updateOrderCommandHandler.execute(c.req.valid('json')).then(() =>
-		c.json(
-			{
-				success: true
-			},
-			200
+	updateOrderCommandHandler
+		.execute({
+			id: c.req.valid('param').orderId,
+			...c.req.valid('json')
+		})
+		.then(() =>
+			c.json(
+				{
+					success: true
+				},
+				200
+			)
 		)
-	)
 );
 
 ordersApp.openapi(GetOrderByIdRouteSchema, (c) =>

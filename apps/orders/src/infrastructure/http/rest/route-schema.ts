@@ -11,7 +11,6 @@ const CreateOrderBodySchema = z.object({
 });
 
 const UpdateOrderBodySchema = z.object({
-	id: z.string().uuid(),
 	price: z.number().min(1).optional(),
 	quantity: z.number().min(1).optional(),
 	status: z.union([z.literal('created'), z.literal('accepted'), z.literal('rejected')]).optional()
@@ -24,7 +23,9 @@ const OrderResponseSchema = z
 		quantity: z.number(),
 		product_id: z.string(),
 		customer_id: z.string(),
-		seller_id: z.string()
+		seller_id: z.string(),
+		created_at: z.string(),
+		updated_at: z.string().optional()
 	})
 	.optional();
 
@@ -84,7 +85,7 @@ export const CreateOrderRouteSchema = createRoute({
 
 export const UpdateOrderRouteSchema = createRoute({
 	method: 'put',
-	path: '/orders/{id}',
+	path: '/orders/{orderId}',
 	request: {
 		params: paramsSchema,
 		body: {
@@ -114,7 +115,7 @@ export const UpdateOrderRouteSchema = createRoute({
 
 export const GetOrderByIdRouteSchema = createRoute({
 	method: 'get',
-	path: '/orders/{id}',
+	path: '/orders/{orderId}',
 	request: {
 		params: paramsSchema
 	},

@@ -1,7 +1,7 @@
 import { Order } from '@/domain/order';
-import { OrderRepository } from '@/domain/repository';
+import { OrdersRepository } from '@/domain/repository';
 
-export class InMemoryRepository implements OrderRepository {
+export class InMemoryRepository implements OrdersRepository {
 	public orders: Order[] = [];
 
 	async create(order: Order): Promise<void> {

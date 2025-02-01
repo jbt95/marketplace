@@ -8,15 +8,29 @@ import { OrderUpdated } from './events/order-updated';
 
 export type Status = 'created' | 'accepted' | 'rejected' | 'shipping_in_progress' | 'shipped';
 
+export interface MarshalledOrder {
+	id: string;
+	price: number;
+	quantity: number;
+	status: Status;
+	product_id: string;
+	customer_id: string;
+	seller_id: string;
+	created_at: string;
+	updated_at?: string;
+}
+
 export class Order {
 	public static eventEmitter: EventEmitter;
 
 	public _status: Status = 'created';
+	public created_at = new Date();
+	public updated_at?: Date;
 
 	constructor(
 		public readonly id: string,
-		public _price: number,
-		public _quantity: number,
+		private _price: number,
+		private _quantity: number,
 		public readonly product_id: string,
 		public readonly customer_id: string,
 		public readonly seller_id: string
@@ -26,6 +40,26 @@ export class Order {
 
 	public get status(): Status {
 		return this._status;
+	}
+
+	public set status(status: Omit<Status, 'created'>) {
+		if (this._status === status) {
+			return;
+		}
+		this._status = status as Status;
+		switch (this._status) {
+			case 'accepted':
+				Order.eventEmitter.emit(new OrderAccepted(this));
+				break;
+			case 'rejected':
+				Order.eventEmitter.emit(new OrderRejected(this));
+				break;
+			case 'shipping_in_progress':
+				Order.eventEmitter.emit(new OrderShippingInProgress(this));
+				break;
+			case 'shipped':
+				Order.eventEmitter.emit(new OrderShipped(this));
+		}
 	}
 
 	public get price(): number {
@@ -52,27 +86,7 @@ export class Order {
 		Order.eventEmitter.emit(new OrderUpdated(this));
 	}
 
-	public set status(status: Omit<Status, 'created'>) {
-		if (this._status === status) {
-			return;
-		}
-		this._status = status as Status;
-		switch (this._status) {
-			case 'accepted':
-				Order.eventEmitter.emit(new OrderAccepted(this));
-				break;
-			case 'rejected':
-				Order.eventEmitter.emit(new OrderRejected(this));
-				break;
-			case 'shipping_in_progress':
-				Order.eventEmitter.emit(new OrderShippingInProgress(this));
-				break;
-			case 'shipped':
-				Order.eventEmitter.emit(new OrderShipped(this));
-		}
-	}
-
-	public toJSON() {
+	public toJSON(): MarshalledOrder {
 		return {
 			id: this.id,
 			price: this.price,
@@ -80,7 +94,9 @@ export class Order {
 			status: this.status,
 			product_id: this.product_id,
 			customer_id: this.customer_id,
-			seller_id: this.seller_id
+			seller_id: this.seller_id,
+			created_at: this.created_at.toISOString(),
+			updated_at: this.updated_at?.toISOString()
 		};
 	}
 }

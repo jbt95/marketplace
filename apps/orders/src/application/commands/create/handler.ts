@@ -1,5 +1,5 @@
 import { Order } from '@/domain/order';
-import { OrderRepository } from '@/domain/repository';
+import { OrdersRepository } from '@/domain/repository';
 import { z } from 'zod';
 import { OrderAlreadyExistsError } from './order-already-exists.error';
 
@@ -15,7 +15,7 @@ const schema = z.object({
 type CreateOrderCommandSchema = z.infer<typeof schema>;
 
 export class CreateOrderCommandHandler {
-	constructor(private readonly orderRepository: OrderRepository) {}
+	constructor(private readonly orderRepository: OrdersRepository) {}
 
 	async execute(command: CreateOrderCommandSchema): Promise<void> {
 		const parsed = schema.parse(command);

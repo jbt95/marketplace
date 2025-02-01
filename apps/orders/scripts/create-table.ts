@@ -6,7 +6,8 @@ export const dynamoDbConfig: DynamoDBClientConfig = {
 	credentials: {
 		accessKeyId: 'secret',
 		secretAccessKey: 'secret'
-	}
+	},
+	logger: console
 };
 
 const client = new DynamoDBClient(dynamoDbConfig);
@@ -20,7 +21,18 @@ export const createInvoiceTable = async () => {
 		],
 		AttributeDefinitions: [
 			{ AttributeName: 'pk', AttributeType: 'S' },
-			{ AttributeName: 'sk', AttributeType: 'S' }
+			{ AttributeName: 'sk', AttributeType: 'S' },
+			{ AttributeName: '_', AttributeType: 'S' }
+		],
+		GlobalSecondaryIndexes: [
+			{
+				IndexName: 'byCreatedAt',
+				KeySchema: [
+					{ AttributeName: '_', KeyType: 'HASH' },
+					{ AttributeName: 'sk', KeyType: 'RANGE' }
+				],
+				Projection: { ProjectionType: 'ALL' }
+			}
 		],
 		BillingMode: 'PAY_PER_REQUEST'
 	});

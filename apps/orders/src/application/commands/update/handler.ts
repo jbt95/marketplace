@@ -1,4 +1,4 @@
-import { OrderRepository } from '@/domain/repository';
+import { OrdersRepository } from '@/domain/repository';
 import { z } from 'zod';
 import { OrderNotFoundError } from './order-not-found.error';
 
@@ -12,7 +12,7 @@ const schema = z.object({
 type UpdateOrderCommandSchema = z.infer<typeof schema>;
 
 export class UpdateOrderCommandHandler {
-	constructor(private readonly orderRepository: OrderRepository) {}
+	constructor(private readonly orderRepository: OrdersRepository) {}
 
 	async execute(command: UpdateOrderCommandSchema): Promise<void> {
 		const parsed = schema.parse(command);
@@ -20,6 +20,7 @@ export class UpdateOrderCommandHandler {
 		if (!order) {
 			throw new OrderNotFoundError();
 		}
+		order.updated_at = new Date();
 		order.price = parsed.price ?? order.price;
 		order.quantity = parsed.quantity ?? order.quantity;
 		order.status = parsed.status ?? order.status;

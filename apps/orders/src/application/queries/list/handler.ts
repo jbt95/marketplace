@@ -1,8 +1,8 @@
-import { OrderRepository } from '@/domain/repository';
+import { OrdersRepository } from '@/domain/repository';
 import { OrderListResponse } from '../response.schema';
 
 export class ListOrdersQueryHandler {
-	constructor(private readonly orderRepository: OrderRepository) {}
+	constructor(private readonly orderRepository: OrdersRepository) {}
 
 	async execute(): Promise<OrderListResponse> {
 		const orders = await this.orderRepository.list();
@@ -14,7 +14,9 @@ export class ListOrdersQueryHandler {
 				quantity: order.quantity,
 				product_id: order.product_id,
 				customer_id: order.customer_id,
-				seller_id: order.seller_id
+				seller_id: order.seller_id,
+				created_at: order.created_at.toISOString(),
+				updated_at: order.updated_at?.toISOString()
 			}))
 		};
 	}

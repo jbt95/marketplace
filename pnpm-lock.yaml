@@ -75,6 +75,9 @@ importers:
       '@aws-sdk/client-dynamodb':
         specifier: ^3.738.0
         version: 3.738.0
+      '@aws-sdk/util-dynamodb':
+        specifier: ^3.738.0
+        version: 3.738.0(@aws-sdk/client-dynamodb@3.738.0)
       '@hono/node-server':
         specifier: ^1.13.7
         version: 1.13.7(hono@4.6.19)
@@ -533,6 +536,16 @@ packages:
     engines: {node: '>=18.0.0'}
     dependencies:
       '@smithy/types': 4.1.0
+      tslib: 2.8.1
+    dev: false
+
+  /@aws-sdk/util-dynamodb@3.738.0(@aws-sdk/client-dynamodb@3.738.0):
+    resolution: {integrity: sha512-+CYjx9XwS8YGJuEOcRUmboKRvYStga0nug08B0dT4HNvHOaLcnsOTQ4rTwVasaFUwRHY5L2MeU/yUrracvU0nQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@aws-sdk/client-dynamodb': ^3.738.0
+    dependencies:
+      '@aws-sdk/client-dynamodb': 3.738.0
       tslib: 2.8.1
     dev: false
 
