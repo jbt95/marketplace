@@ -19,13 +19,12 @@ export class DynamoDBRepository implements InvoiceRepository {
 	private static readonly tableName = 'invoices';
 
 	private static readonly config: DynamoDBClientConfig = {
-		endpoint: 'http://localhost:8000',
+		endpoint: 'http://dynamodb:8000',
 		region: 'eu-central-1',
 		credentials: {
 			accessKeyId: 'secret',
 			secretAccessKey: 'secret'
-		},
-		logger: console
+		}
 	};
 
 	private readonly client = new DynamoDBClient(DynamoDBRepository.config);

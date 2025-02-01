@@ -12,7 +12,6 @@
 		"delete:table": "tsx ./scripts/delete-table.ts"
 	},
 	"devDependencies": {
-		"@marketplace/ts-config": "workspace:^0.0.0",
 		"@types/node": "^22.12.0",
 		"prettier": "^3.4.2",
 		"source-map-support": "^0.5.21",

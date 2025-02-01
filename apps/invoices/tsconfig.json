@@ -1,10 +1,22 @@
 {
-	"extends": "@marketplace/ts-config/tsconfig.json",
 	"compilerOptions": {
+    "allowJs": false,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "noUncheckedIndexedAccess": true,
+    "lib": ["ESNext"],
+    "strict": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "incremental": true,
+    "skipLibCheck": true,
 		"paths": {
 			"@/*": ["./src/*"]
 		}
-	},
+  },
 	"include": ["/**/*.ts"],
 	"exclude": ["node_modules", "dist"]
 }

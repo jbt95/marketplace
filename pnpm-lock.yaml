@@ -48,9 +48,6 @@ importers:
         specifier: ^3.24.1
         version: 3.24.1
     devDependencies:
-      '@marketplace/ts-config':
-        specifier: workspace:^0.0.0
-        version: link:../../packages/ts-config
       '@types/node':
         specifier: ^22.12.0
         version: 22.12.0
@@ -103,9 +100,6 @@ importers:
         specifier: ^3.24.1
         version: 3.24.1
     devDependencies:
-      '@marketplace/ts-config':
-        specifier: workspace:^0.0.0
-        version: link:../../packages/ts-config
       '@types/node':
         specifier: ^22.12.0
         version: 22.12.0
@@ -127,8 +121,6 @@ importers:
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@22.12.0)
-
-  packages/ts-config: {}
 
 packages:
 
