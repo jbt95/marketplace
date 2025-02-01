@@ -17,7 +17,7 @@ describe('When creating an invoice', () => {
 	});
 
 	it('should create an invoice', async () => {
-		await handler.execute({ id, orderId, url });
+		await handler.execute({ id, order_id: orderId, url });
 		const invoice = repository.invoices.at(0);
 		expect(invoice).toBeInstanceOf(Invoice);
 		expect(invoice?.id).toBe(id);
@@ -30,7 +30,7 @@ describe('When creating an invoice', () => {
 			repository.invoices = [new Invoice(id, orderId, url)];
 		});
 		it('should throw an error', async () => {
-			await expect(handler.execute({ id, orderId, url })).rejects.toThrow(
+			await expect(handler.execute({ id, order_id: orderId, url })).rejects.toThrow(
 				InvoiceAlreadyExistsError
 			);
 		});
@@ -38,19 +38,23 @@ describe('When creating an invoice', () => {
 
 	describe("When the id doesn't match the UUID format", () => {
 		it('should throw an error', async () => {
-			await expect(handler.execute({ id: 'not-a-uuid', orderId, url })).rejects.toThrow(ZodError);
+			await expect(handler.execute({ id: 'not-a-uuid', order_id: orderId, url })).rejects.toThrow(
+				ZodError
+			);
 		});
 	});
 
 	describe('When the orderId doesnt match the UUID format', () => {
 		it('should throw an error', async () => {
-			await expect(handler.execute({ id, orderId: 'not-a-uuid', url })).rejects.toThrow(ZodError);
+			await expect(handler.execute({ id, order_id: 'not-a-uuid', url })).rejects.toThrow(ZodError);
 		});
 	});
 
 	describe('When the url is not a valid url', () => {
 		it('should throw an error', async () => {
-			await expect(handler.execute({ id, orderId, url: 'not-a-url' })).rejects.toThrow(ZodError);
+			await expect(handler.execute({ id, order_id: orderId, url: 'not-a-url' })).rejects.toThrow(
+				ZodError
+			);
 		});
 	});
 });

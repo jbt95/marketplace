@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 const schema = z.object({
 	id: z.string().uuid(),
-	orderId: z.string().uuid(),
+	order_id: z.string().uuid(),
 	url: z.string().url()
 });
 
@@ -20,6 +20,6 @@ export class CreateInvoiceHandler {
 		if (invoice) {
 			throw new InvoiceAlreadyExistsError();
 		}
-		await this.repository.create(new Invoice(parsed.id, parsed.orderId, parsed.url));
+		await this.repository.create(new Invoice(parsed.id, parsed.order_id, parsed.url));
 	}
 }

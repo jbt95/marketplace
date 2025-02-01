@@ -23,6 +23,9 @@ importers:
       '@aws-sdk/client-dynamodb':
         specifier: ^3.738.0
         version: 3.738.0
+      '@aws-sdk/util-dynamodb':
+        specifier: ^3.738.0
+        version: 3.738.0(@aws-sdk/client-dynamodb@3.738.0)
       '@hono/node-server':
         specifier: ^1.13.7
         version: 1.13.7(hono@4.6.19)

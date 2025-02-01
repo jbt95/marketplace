@@ -20,7 +20,18 @@ export const createInvoiceTable = async () => {
 		],
 		AttributeDefinitions: [
 			{ AttributeName: 'pk', AttributeType: 'S' },
-			{ AttributeName: 'sk', AttributeType: 'S' }
+			{ AttributeName: 'sk', AttributeType: 'S' },
+			{ AttributeName: 'order_id', AttributeType: 'S' }
+		],
+		GlobalSecondaryIndexes: [
+			{
+				IndexName: 'byOrderId',
+				KeySchema: [
+					{ AttributeName: 'order_id', KeyType: 'HASH' },
+					{ AttributeName: 'sk', KeyType: 'RANGE' }
+				],
+				Projection: { ProjectionType: 'ALL' }
+			}
 		],
 		BillingMode: 'PAY_PER_REQUEST'
 	});
