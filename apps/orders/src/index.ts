@@ -26,7 +26,7 @@ app.route('/', ordersApp);
 app.get('/docs', swaggerUI({ url: '/api/v1/docs/openapi' }));
 app.doc('/docs/openapi', {
 	openapi: '3.0.0',
-	servers: [{ url: 'http://localhost:3000/api/v1' }],
+	servers: [{ url: 'http://localhost:3000' }],
 	info: { version: '1.0.0', title: 'Orders API' }
 });
 

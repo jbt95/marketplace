@@ -30,7 +30,7 @@ const main = async () => {
 	app.get('/docs', swaggerUI({ url: '/api/v1/docs/openapi' }));
 	app.doc('/docs/openapi', {
 		openapi: '3.0.0',
-		servers: [{ url: 'http://localhost:4200/api/v1' }],
+		servers: [{ url: 'http://localhost:4200' }],
 		info: { version: '1.0.0', title: 'Invoices API' }
 	});
 

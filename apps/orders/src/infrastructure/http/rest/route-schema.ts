@@ -1,28 +1,60 @@
 import { createRoute } from '@hono/zod-openapi';
 import { z } from 'zod';
 
-const CreateOrderBodySchema = z.object({
-	id: z.string().uuid(),
-	price: z.number().min(1),
-	quantity: z.number().min(1),
-	product_id: z.string(),
-	customer_id: z.string(),
-	seller_id: z.string()
+const PriceSchema = z.number().min(1).openapi({
+	description: 'The order price',
+	example: 100,
+	minimum: 1
 });
 
-const UpdateOrderBodySchema = z.object({
-	price: z.number().min(1).optional(),
-	quantity: z.number().min(1).optional(),
-	status: z
-		.union([
-			z.literal('created'),
-			z.literal('accepted'),
-			z.literal('rejected'),
-			z.literal('shipped'),
-			z.literal('shipping_in_progress')
-		])
-		.optional()
+const QuantitySchema = z.number().min(1).openapi({
+	description: 'The quantity of items',
+	example: 100,
+	minimum: 1
 });
+
+const CreateOrderBodySchema = z
+	.object({
+		id: z.string().uuid().openapi({
+			description: 'The order id',
+			example: '123e4567-e89b-12d3-a456-426655440000'
+		}),
+		price: PriceSchema,
+		quantity: QuantitySchema,
+		product_id: z.string().openapi({
+			description: 'The product id',
+			example: '123e4567-e89b-12d3-a456-426655440000'
+		}),
+		customer_id: z.string().openapi({
+			description: 'The customer id',
+			example: '123e4567-e89b-12d3-a456-426655440000'
+		}),
+		seller_id: z.string().openapi({
+			description: 'The seller id',
+			example: '123e4567-e89b-12d3-a456-426655440000'
+		})
+	})
+	.openapi('CreateOrderSchema');
+
+const UpdateOrderBodySchema = z
+	.object({
+		price: PriceSchema,
+		quantity: QuantitySchema,
+		status: z
+			.union([
+				z.literal('created'),
+				z.literal('accepted'),
+				z.literal('rejected'),
+				z.literal('shipped'),
+				z.literal('shipping_in_progress')
+			])
+			.optional()
+			.openapi({
+				description: 'The order status',
+				example: 'created'
+			})
+	})
+	.openapi('UpdateOrderBodySchema');
 
 const OrderResponseSchema = z
 	.object({
@@ -37,9 +69,13 @@ const OrderResponseSchema = z
 	})
 	.optional();
 
-const GetOrderByIdResponseSchema = OrderResponseSchema;
-const ListOrdersResponseSchema = z.object({ items: z.array(OrderResponseSchema).default([]) });
-const ErrorResponseSchema = z.object({ success: z.boolean(), message: z.string() });
+const GetOrderByIdResponseSchema = OrderResponseSchema.openapi('GetOrderByIdResponseSchema');
+const ListOrdersResponseSchema = z
+	.object({ items: z.array(OrderResponseSchema).default([]) })
+	.openapi('ListOrdersResponseSchema');
+const ErrorResponseSchema = z
+	.object({ success: z.boolean(), message: z.string() })
+	.openapi('ErrorResponseSchema');
 
 const paramsSchema = z.object({
 	orderId: z
