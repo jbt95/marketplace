@@ -26,7 +26,7 @@ export class RabbitMqEventConsumer {
 
 	constructor() {}
 
-	async consume() {
+	async startListenningForMessages() {
 		if (!this.connection) {
 			this.connection = await amqp.connect(RabbitMqEventConsumer.RABBITMQ_URL);
 			this.channel = await this.connection.createChannel();

@@ -7,7 +7,6 @@ import { serve } from '@hono/node-server';
 import { swaggerUI } from '@hono/swagger-ui';
 import { invoiceApp } from './infrastructure/http/rest/handler';
 import { cors } from 'hono/cors';
-import * as amqp from 'amqplib';
 import { RabbitMqEventConsumer } from './infrastructure/events/rabbitmq-event-consumer';
 
 const main = async () => {
@@ -34,7 +33,7 @@ const main = async () => {
 		info: { version: '1.0.0', title: 'Invoices API' }
 	});
 
-	await consumer.consume();
+	await consumer.startListenningForMessages();
 
 	serve({ fetch: app.fetch, port: 4200 }, (v) => console.log(`[INFO] Listening on port ${v.port}`));
 };

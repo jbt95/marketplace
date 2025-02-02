@@ -3,9 +3,20 @@ import { InvoiceNotFoundError } from '@/application/commands/send/invoice-not-fo
 import { ErrorHandler } from 'hono';
 import { ZodError } from 'zod';
 
+const errors = [InvoiceAlreadyExistsError, InvoiceNotFoundError, ZodError];
+
 export const errorHandler: ErrorHandler = (err, c) => {
-	if (err instanceof InvoiceAlreadyExistsError || err instanceof InvoiceNotFoundError || ZodError) {
-		return c.json({ success: false, message: err.message }, 400);
+	if (errors.some((error) => err instanceof error)) {
+		return c.json(
+			{
+				success: false,
+				message: err.message,
+				type: err.name,
+				cause: err.cause,
+				status: 400
+			},
+			400
+		);
 	}
 	return c.json({ success: false, message: 'Internal server error' }, 500);
 };
