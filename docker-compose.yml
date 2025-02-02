@@ -11,6 +11,7 @@ services:
     networks:
       - app-network
   dynamodb:
+    container_name: dynamodb
     image: amazon/dynamodb-local:1.20.0
     restart: always
     command: -jar DynamoDBLocal.jar -sharedDb -dbPath ./data
@@ -21,6 +22,7 @@ services:
     networks:
       - app-network
   dynamodb-admin:
+    container_name: dynamodb-admin
     image: aaronshaf/dynamodb-admin:4.2.3
     ports:
       - "8002:8001"
@@ -34,9 +36,13 @@ services:
     networks:
       - app-network
   orders-api:
+    container_name: orders-api
     build:
       context: ./apps/orders
       dockerfile: Dockerfile
+      args:
+        service: orders
+        port: 3000
     ports:
       - 3000:3000
     depends_on:
@@ -49,9 +55,13 @@ services:
         - action: rebuild
           path: ./apps/orders
   invoices-api:
+    container_name: invoices-api
     build:
       context: ./apps/invoices
       dockerfile: Dockerfile
+      args:
+        service: invoices
+        port: 4200
     ports:
       - 4200:4200
     depends_on:

@@ -51,7 +51,7 @@ export class DynamoDBRepository implements OrdersRepository {
 			},
 			_price: { value: order.price, writable: true },
 			_quantity: { value: order.quantity, writable: true },
-			status: { value: order.status, writable: true },
+			_status: { value: order.status, writable: true },
 			product_id: { value: order.product_id, writable: false },
 			customer_id: { value: order.customer_id, writable: false },
 			seller_id: { value: order.seller_id, writable: false }

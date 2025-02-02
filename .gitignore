@@ -18,3 +18,4 @@ cdk.out
 /dist
 /packages/**/dist
 /docker
+/out

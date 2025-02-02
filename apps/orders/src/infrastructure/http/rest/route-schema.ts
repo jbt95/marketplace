@@ -13,7 +13,15 @@ const CreateOrderBodySchema = z.object({
 const UpdateOrderBodySchema = z.object({
 	price: z.number().min(1).optional(),
 	quantity: z.number().min(1).optional(),
-	status: z.union([z.literal('created'), z.literal('accepted'), z.literal('rejected')]).optional()
+	status: z
+		.union([
+			z.literal('created'),
+			z.literal('accepted'),
+			z.literal('rejected'),
+			z.literal('shipped'),
+			z.literal('shipping_in_progress')
+		])
+		.optional()
 });
 
 const OrderResponseSchema = z

@@ -5,7 +5,7 @@ import { OrderShipped } from './events/order-shipped';
 import { OrderShippingInProgress } from './events/order-shipping-in-progress';
 import { OrderUpdated } from './events/order-updated';
 
-export type DomainEvents =
+export type DomainEvent =
 	| OrderCreated
 	| OrderUpdated
 	| OrderAccepted
@@ -14,5 +14,5 @@ export type DomainEvents =
 	| OrderShipped;
 
 export interface EventEmitter {
-	emit(event: DomainEvents): void;
+	emit(event: DomainEvent): void;
 }

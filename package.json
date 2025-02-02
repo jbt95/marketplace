@@ -5,19 +5,20 @@
 	"main": "index.js",
 	"packageManager": "pnpm@8.6.1",
 	"scripts": {
-		"postinstall": "husky install",
+		"postinstall": "husky install && turbo run build",
 		"type:check:all": "turbo run type:check --output-logs=new-only" ,
 		"test:coverage:all": "turbo run test:coverage --output-logs=new-only" ,
 		"test:unit:all": "turbo run test:unit --output-logs=new-only" ,
-		"format:all": "turbo run format --output-logs=new-only --force"
+		"format:all": "turbo run format --output-logs=new-only --force",
+		"build:all": "turbo run build --output-logs=new-only",
+		"prepare": "husky install && turbo run build"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "UNLICENSED",
 	"devDependencies": {
-		"esbuild": "^0.18.11",
 		"husky": "^8.0.3",
-		"turbo": "^2.3.4"
+		"turbo": "^2.4.0"
 	}
 
 }

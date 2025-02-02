@@ -13,6 +13,7 @@ describe('When sending an invoice', () => {
 	const id = crypto.randomUUID();
 	const orderId = crypto.randomUUID();
 	const url = 'https://example.com';
+	const date = new Date();
 
 	beforeEach(() => {
 		repository.invoices = [];
@@ -20,25 +21,28 @@ describe('When sending an invoice', () => {
 	});
 
 	it('should send the invoice', async () => {
-		await handler.execute({ orderId });
+		await handler.execute({ orderId, date: date.toISOString() });
 		const invoice = notificationService.notifications.at(0);
 		expect(invoice).toBeInstanceOf(Invoice);
 		expect(invoice?.id).toBe(id);
 		expect(invoice?.orderId).toBe(orderId);
 		expect(invoice?.url).toBe(url);
+		expect(invoice?.sentAt).toBeInstanceOf(Date);
 	});
 
 	describe('When the invoice does not exist for the order', () => {
 		it('should throw an error', async () => {
-			await expect(handler.execute({ orderId: crypto.randomUUID() })).rejects.toThrow(
-				InvoiceNotFoundError
-			);
+			await expect(
+				handler.execute({ orderId: crypto.randomUUID(), date: date.toISOString() })
+			).rejects.toThrow(InvoiceNotFoundError);
 		});
 	});
 
 	describe('When the orderId doesnt match the UUID format', () => {
 		it('should throw an error', async () => {
-			await expect(handler.execute({ orderId: 'not-a-uuid' })).rejects.toThrow(ZodError);
+			await expect(
+				handler.execute({ orderId: 'not-a-uuid', date: date.toISOString() })
+			).rejects.toThrow(ZodError);
 		});
 	});
 });

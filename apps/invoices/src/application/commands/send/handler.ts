@@ -3,7 +3,7 @@ import { InvoiceRepository } from '@/domain/repository';
 import { z } from 'zod';
 import { InvoiceNotFoundError } from './invoice-not-found.error';
 
-const schema = z.object({ orderId: z.string().uuid() });
+const schema = z.object({ orderId: z.string().uuid(), date: z.string() });
 type SendInvoiceCommand = z.infer<typeof schema>;
 
 export class SendInvoiceHandler {
@@ -18,6 +18,7 @@ export class SendInvoiceHandler {
 		if (!invoice) {
 			throw new InvoiceNotFoundError();
 		}
-		await this.notificationService.send(invoice);
+		invoice.sentAt = new Date(parsed.date);
+		await Promise.all([this.repository.update(invoice), this.notificationService.send(invoice)]);
 	}
 }

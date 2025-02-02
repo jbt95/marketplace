@@ -63,6 +63,15 @@ export class DynamoDBRepository implements InvoiceRepository {
 		);
 	}
 
+	async update(order: Invoice): Promise<void> {
+		await this.client.send(
+			new PutItemCommand({
+				TableName: DynamoDBRepository.tableName,
+				Item: DynamoDBRepository.marshall(order)
+			})
+		);
+	}
+
 	async findById(id: string): Promise<Invoice | undefined> {
 		return this.client
 			.send(

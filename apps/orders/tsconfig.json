@@ -1,7 +1,6 @@
 {
 	"compilerOptions": {
     "allowJs": false,
-    "noEmit": true,
     "esModuleInterop": true,
     "target": "ESNext",
     "noUncheckedIndexedAccess": true,
@@ -15,7 +14,8 @@
     "skipLibCheck": true,
 		"paths": {
 			"@/*": ["./src/*"]
-		}
+		},
+		"outDir": "dist"
   },
 	"include": ["/**/*.ts"],
 	"exclude": ["node_modules", "dist"]

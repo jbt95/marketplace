@@ -8,6 +8,10 @@ export class InMemoryInvoiceRepository implements InvoiceRepository {
 		this.invoices.push(order);
 	}
 
+	async update(order: Invoice): Promise<void> {
+		this.invoices = this.invoices.map((invoice) => (invoice.id === order.id ? order : invoice));
+	}
+
 	async findById(id: string): Promise<Invoice | undefined> {
 		return this.invoices.find((invoice) => invoice.id === id);
 	}
