@@ -1,6 +1,12 @@
 # Installation
 
-> ⚠️ This project uses node v16.15.0
+> ⚠️ This project uses node v20.11.0
+
+## Install node
+
+Run `nvm install 20.11.0` to install node v20.11.0 and then `nvm use 20.11.0` to use it.
+
+## Package manager
 
 This project uses `pnpm` as its package manager. You can install it with `npm i -g pnpm`.
 
@@ -11,66 +17,52 @@ pnpm i
 ```
 
 # Project structure
+
 This project is a monorepo composed of two `apps`:
-- `apps/server`: The backend API
-- `apps/internal`: Shared code between the `server` and `web` apps
-- `apps/web`: The frontend web app
-- `packages/eslint-config`: Contains the eslint configuration
-- `packages/ts-config`: Contains the typescript configuration
+
+- `apps/orders`: The orders api
+- `apps/invoices`: The invoices api
 
 # Usage
-### Deploying the api
-To deploy de server run `pnpm deploy:prod:all` with this environment variables:
-- `AWS_PROFILE=<your_profile>`: The aws profile to use defined in `~/.aws/credentials`. This is **optional**, if you don't provide it, the **default profile** will be used ([more info](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)).
-  
-	```
-	# ~/.aws/credentials file example
-	
-	[default]
-	aws_access_key_id = <your_access_key_id>
-	aws_secret_access_key = <your_secret_access_key>
-	aws_account_id = <your_account_id>
-	region = eu-west-1
-	```
-- `STAGE=prod`
 
-For example:
-``` 
- AWS_PROFILE=<your_profile> STAGE=prod pnpm deploy:prod:all
+To run the project you will need to have docker installed in your computer. To start the project, run:
+
+```
+docker compose up -d
 ```
 
-After the deploy is completed you should grab the api url either from your aws console or from the output of the deploy command.
+In case you want to run the project in watch mode, run:
 
-It should look like this: 
-> `https://<api_id>.execute-api.eu-west-1.amazonaws.com/prod`
+```
+docker compose watch
+```
 
-### Running the web app
-Before running the web you will need to build the `internal` package. To do so, run `pnpm build:internal`.
+This will expose the following ports:
 
-After building the package you can now run the web app, but before, you will need to create an `.env` file in `apps/web` folder with the following content:
+- Orders API: http://localhost:3000
+- Invoices API: http://localhost:4200
+- DynamoDB: http://localhost:8000
+- RabbitMQ: http://localhost:15672
+  - Username: **guest**
+  - Password: **guest**
+- DynamoDB Admin: http://localhost:8002
 
-> VITE_API_URL=<api_url>
+## API Documentation
 
-`VITE_API_URL` should be the api url you got from the deploy command or from the aws console.
+This project uses openapi together with swagger-ui to generate the documentation. You can access the documentation at:
 
-Then you can `cd apps/web` and run `pnpm run dev` to start the web app.
-
-# License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-# Contributing
-This project is not open to contributions.
+- Orders API: http://localhost:3000/api/v1/docs/openapi
+- Invoices API: http://localhost:4200/api/v1/docs/openapi
 
 # Tech Stack
-- [pnpm](https://pnpm.io/)
-- [Typescript](https://www.typescriptlang.org/)
-- [Vue 3](https://v3.vuejs.org/)
-- [Vite](https://vitejs.dev/)
-- [AWS CDK](https://aws.amazon.com/cdk/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [DynamoDB](https://aws.amazon.com/dynamodb/)
-- [AWS Lambda](https://aws.amazon.com/lambda/)
-- [AWS API Gateway](https://aws.amazon.com/api-gateway/)
-- [Mocha](https://mochajs.org/)
-- [Turborepo](https://turborepo.org/)
 
+- [Pnpm](https://pnpm.io/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [DynamoDB](https://aws.amazon.com/dynamodb/)
+- [Turborepo](https://turborepo.org/)
+- [Docker](https://www.docker.com/)
+- [RabbitMQ](https://www.rabbitmq.com/)
+- [Hono](https://honojs.dev/)
+- [Zod](https://github.com/colinhacks/zod)
+- [Swagger UI](https://swagger.io/tools/swagger-ui/)
