@@ -11,7 +11,8 @@
 		"test:unit:all": "turbo run test:unit --output-logs=new-only" ,
 		"format:all": "turbo run format --output-logs=new-only --force",
 		"build:all": "turbo run build --output-logs=new-only",
-		"prepare": "husky install && turbo run build"
+		"prepare": "husky install && turbo run build",
+		"create:table:all": "turbo run create:table --output-logs=new-only"
 	},
 	"keywords": [],
 	"author": "",

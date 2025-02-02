@@ -47,6 +47,14 @@ This will expose the following ports:
   - Password: **guest**
 - DynamoDB Admin: http://localhost:8002
 
+After the project is started, you will need to create the tables in DynamoDB. To do this, run:
+
+```
+pnpm run create:table:all
+```
+
+After the tables are created, you can access the dynamoDB admin at http://localhost:8002 and check that the tables are created.
+
 ## API Documentation
 
 This project uses openapi together with swagger-ui to generate the documentation. You can access the documentation at:

@@ -5,6 +5,7 @@
 		"format": {},
 		"build": {},
 		"test:unit": {},
-		"test:coverage": {}
+		"test:coverage": {},
+		"create:table": {}
   }
 }
