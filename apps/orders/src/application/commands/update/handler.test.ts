@@ -9,6 +9,7 @@ import { OrderAccepted } from '@/domain/events/order-accepted';
 import { OrderRejected } from '@/domain/events/order-rejected';
 import { OrderShipped } from '@/domain/events/order-shipped';
 import { OrderShippingInProgress } from '@/domain/events/order-shipping-in-progress';
+import { OrderShippedError } from '@/domain/errors/order-shipped.error';
 
 describe('When updating an order', () => {
 	const inMemoryRepository = new InMemoryRepository();
@@ -107,6 +108,20 @@ describe('When updating an order', () => {
 			const event = inMemoryEventEmitter.events.find((event) => event instanceof OrderShipped);
 			expect(event).toBeInstanceOf(OrderShipped);
 			expect(event!.order.status).toBe('shipped');
+		});
+
+		describe('When the order is already shipped and an update is requested', () => {
+			const newId = 'newId';
+			beforeEach(async () => {
+				const newOrder = new Order(newId, price, quantity, product_id, customer_id, seller_id);
+				newOrder.status = 'shipped';
+				await inMemoryRepository.create(newOrder);
+			});
+			it('should throw an error', async () => {
+				await expect(commandHandler.execute({ id: newId, quantity: 20 })).rejects.toThrow(
+					OrderShippedError
+				);
+			});
 		});
 	});
 

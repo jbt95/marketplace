@@ -1,3 +1,4 @@
+import { OrderShippedError } from './errors/order-shipped.error';
 import { EventEmitter } from './event-emitter';
 import { OrderAccepted } from './events/order-accepted';
 import { OrderCreated } from './events/order-created';
@@ -43,9 +44,8 @@ export class Order {
 	}
 
 	public set status(status: Omit<Status, 'created'>) {
-		if (this._status === status) {
-			return;
-		}
+		this.guardOrderIsNotShipped();
+		if (this._status === status) return;
 		this._status = status as Status;
 		switch (this._status) {
 			case 'accepted':
@@ -59,6 +59,7 @@ export class Order {
 				break;
 			case 'shipped':
 				Order.eventEmitter.emit(new OrderShipped(this));
+				break;
 		}
 	}
 
@@ -67,9 +68,8 @@ export class Order {
 	}
 
 	public set price(price: number) {
-		if (this._price === price) {
-			return;
-		}
+		this.guardOrderIsNotShipped();
+		if (this._price === price) return;
 		this._price = price;
 		Order.eventEmitter.emit(new OrderUpdated(this));
 	}
@@ -79,11 +79,16 @@ export class Order {
 	}
 
 	public set quantity(quantity: number) {
-		if (this._quantity === quantity) {
-			return;
-		}
+		this.guardOrderIsNotShipped();
+		if (this._quantity === quantity) return;
 		this._quantity = quantity;
 		Order.eventEmitter.emit(new OrderUpdated(this));
+	}
+
+	private guardOrderIsNotShipped() {
+		if (this.status === 'shipped') {
+			throw new OrderShippedError();
+		}
 	}
 
 	/* v8 ignore start */
