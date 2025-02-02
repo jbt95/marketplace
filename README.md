@@ -16,14 +16,14 @@ To install the dependencies, run
 pnpm i
 ```
 
-# Project structure
+## Project structure
 
 This project is a monorepo composed of two `apps`:
 
 - `apps/orders`: The orders api
 - `apps/invoices`: The invoices api
 
-# Usage
+## Usage
 
 To run the project you will need to have docker installed in your computer. To start the project, run:
 
