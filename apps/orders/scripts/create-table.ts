@@ -12,7 +12,7 @@ export const dynamoDbConfig: DynamoDBClientConfig = {
 
 const client = new DynamoDBClient(dynamoDbConfig);
 
-export const createInvoiceTable = async () => {
+export const createOrdersTable = async () => {
 	const command = new CreateTableCommand({
 		TableName: 'orders',
 		KeySchema: [
@@ -40,7 +40,7 @@ export const createInvoiceTable = async () => {
 	await client.send(command);
 };
 
-createInvoiceTable()
+createOrdersTable()
 	.then(() => console.log(`Created table orders`))
 	.catch((err) => {
 		if (err.code === 'ResourceInUseException') {
