@@ -38,8 +38,8 @@ const CreateOrderBodySchema = z
 
 const UpdateOrderBodySchema = z
 	.object({
-		price: PriceSchema,
-		quantity: QuantitySchema,
+		price: PriceSchema.optional(),
+		quantity: QuantitySchema.optional(),
 		status: z
 			.union([
 				z.literal('created'),
