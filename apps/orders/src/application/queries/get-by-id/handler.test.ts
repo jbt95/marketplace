@@ -31,7 +31,8 @@ describe('When getting an order by id', () => {
 			customer_id,
 			seller_id,
 			created_at: order.created_at.toISOString(),
-			updated_at: order.updated_at?.toISOString()
+			updated_at: order.updated_at?.toISOString(),
+			status: order.status
 		});
 	});
 
